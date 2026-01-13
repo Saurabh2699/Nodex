@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <SidebarProvider>
         <AppSidebar />
       <SidebarInset>{children}</SidebarInset>
-    </SidebarProvider>
+    </SidebarProvider> 
   );
 };
 
