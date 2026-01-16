@@ -9,6 +9,7 @@ export const useSubscription = () => {
       return data;
     },
   });
+
 };
 
 export const useHasActiveSubscription = () => {
