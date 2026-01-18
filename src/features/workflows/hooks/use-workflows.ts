@@ -20,7 +20,7 @@ export const useCreateWorkflows = () => {
   return useMutation(
     trpc.workflows.create.mutationOptions({
       onSuccess: (data) => {
-        toast.success(`Workflow ${data.name} created`);
+        toast.success(`Workflow "${data.name}" created`);
         queryClient.invalidateQueries(trpc.workflows.getMany.queryOptions({}));
       },
       onError: (error) => {
@@ -29,3 +29,17 @@ export const useCreateWorkflows = () => {
     })
   );
 };
+
+export const useRemoveWorkflow = () => {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    trpc.workflows.remove.mutationOptions({
+      onSuccess: (data) => {
+        toast.success(`Workflow "${data.name}" removed`)
+        queryClient.invalidateQueries(trpc.workflows.getMany.queryOptions({}))
+      }
+    })
+  )
+}
