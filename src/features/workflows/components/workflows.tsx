@@ -161,7 +161,7 @@ export const WorkflowsListItem = ({ workflow }: { workflow: Workflow }) => {
       title={workflow.name}
       subtitle={
         <>
-          Updated {formatDistanceToNow(workflow.createdAt, {addSuffix: true})} &bull; Created{" "}
+          Updated {formatDistanceToNow(workflow.updatedAt, {addSuffix: true})} &bull; Created{" "}
           {formatDistanceToNow(workflow.createdAt, {addSuffix: true})}
         </>
       }
