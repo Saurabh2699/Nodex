@@ -26,7 +26,7 @@ export const EditorLoading = () => {
   return <LoadingView message="Loading editor..." />;
 };
 
-export const EditorError = () => {
+export const EditorError = () => { 
   return <ErrorView message="Error loading editor" />;
 };
 
