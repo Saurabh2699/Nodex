@@ -4,9 +4,9 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
-        <AppSidebar />
+      <AppSidebar />
       <SidebarInset>{children}</SidebarInset>
-    </SidebarProvider> 
+    </SidebarProvider>
   );
 };
 
