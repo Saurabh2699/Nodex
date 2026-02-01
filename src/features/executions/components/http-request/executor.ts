@@ -3,6 +3,7 @@ import { NonRetriableError } from "inngest";
 import ky, { Options as KyOptions } from "ky";
 
 type HttpRequestData = {
+  variableName?: string;
   endpoint?: string;
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: string;
@@ -14,6 +15,11 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
   context,
   step,
 }) => {
+  if (!data.variableName) {
+    // TODO: publish error state
+    throw new NonRetriableError("Variable Name not configured");
+  }
+
   if (!data.endpoint) {
     // TODO: publish error state
     throw new NonRetriableError("HTTP Request node: No endpoint configured");
@@ -25,20 +31,32 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
     const options: KyOptions = { method };
     if (["POST", "PUT", "PATCH"].includes(method)) {
       options.body = data.body;
+      options.headers = {
+        "Content-Type": "application/json",
+      };
     }
     const response = await ky(endpoint, options);
     const contentType = response.headers.get("content-type");
     const responseData = contentType?.includes("application/json")
       ? await response.json()
       : await response.text();
-
-    return {
-      ...context,
+    const responsePayload = {
       httpResponse: {
         status: response.status,
         statusText: response.statusText,
         data: responseData,
       },
+    };
+    if (data.variableName) {
+      return {
+        ...context,
+        [data.variableName]: responsePayload,
+      };
+    }
+    // Fallback
+    return {
+      ...context,
+      ...responsePayload,
     };
   });
 
