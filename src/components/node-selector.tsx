@@ -34,17 +34,15 @@ const triggerNodes: NodeTypeOption[] = [
   {
     type: NodeType.GOOGLE_FORM_TRIGGER,
     label: "Google Form",
-    description:
-      "Runs the flow when Google form is submitted",
+    description: "Runs the flow when Google form is submitted",
     icon: "/logos/googleform.svg",
   },
   {
     type: NodeType.STRIPE_TRIGGER,
     label: "Stripe",
-    description:
-      "Runs the flow when the stripe event is captured",
+    description: "Runs the flow when the stripe event is captured",
     icon: "/logos/stripe.svg",
-  }
+  },
 ];
 
 const executionNodes: NodeTypeOption[] = [
@@ -53,6 +51,24 @@ const executionNodes: NodeTypeOption[] = [
     label: "HTTP Request",
     description: "Makes an HTTP request",
     icon: GlobeIcon,
+  },
+  {
+    type: NodeType.GEMINI,
+    label: "Gemini",
+    description: "Use Google Gemini for Generative AI use cases",
+    icon: "/logos/gemini.svg",
+  },
+  {
+    type: NodeType.OPENAI,
+    label: "Open AI",
+    description: "Use Open AI for Generative AI use cases",
+    icon: "/logos/openai.svg",
+  },
+  {
+    type: NodeType.ANTHROPIC,
+    label: "Anthropic",
+    description: "Use Anthropic for Generative AI use cases",
+    icon: "/logos/anthropic.svg",
   },
 ];
 
