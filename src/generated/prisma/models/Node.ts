@@ -29,6 +29,7 @@ export type NodeMinAggregateOutputType = {
   workflowId: string | null
   name: string | null
   type: $Enums.NodeType | null
+  credentialId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -38,6 +39,7 @@ export type NodeMaxAggregateOutputType = {
   workflowId: string | null
   name: string | null
   type: $Enums.NodeType | null
+  credentialId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -47,6 +49,7 @@ export type NodeCountAggregateOutputType = {
   workflowId: number
   name: number
   type: number
+  credentialId: number
   position: number
   data: number
   createdAt: number
@@ -60,6 +63,7 @@ export type NodeMinAggregateInputType = {
   workflowId?: true
   name?: true
   type?: true
+  credentialId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -69,6 +73,7 @@ export type NodeMaxAggregateInputType = {
   workflowId?: true
   name?: true
   type?: true
+  credentialId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -78,6 +83,7 @@ export type NodeCountAggregateInputType = {
   workflowId?: true
   name?: true
   type?: true
+  credentialId?: true
   position?: true
   data?: true
   createdAt?: true
@@ -162,6 +168,7 @@ export type NodeGroupByOutputType = {
   workflowId: string
   name: string
   type: $Enums.NodeType
+  credentialId: string | null
   position: runtime.JsonValue
   data: runtime.JsonValue
   createdAt: Date
@@ -194,11 +201,13 @@ export type NodeWhereInput = {
   workflowId?: Prisma.StringFilter<"Node"> | string
   name?: Prisma.StringFilter<"Node"> | string
   type?: Prisma.EnumNodeTypeFilter<"Node"> | $Enums.NodeType
+  credentialId?: Prisma.StringNullableFilter<"Node"> | string | null
   position?: Prisma.JsonFilter<"Node">
   data?: Prisma.JsonFilter<"Node">
   createdAt?: Prisma.DateTimeFilter<"Node"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Node"> | Date | string
   workflow?: Prisma.XOR<Prisma.WorkflowScalarRelationFilter, Prisma.WorkflowWhereInput>
+  credential?: Prisma.XOR<Prisma.CredentialNullableScalarRelationFilter, Prisma.CredentialWhereInput> | null
   inputConnections?: Prisma.ConnectionListRelationFilter
   outConnections?: Prisma.ConnectionListRelationFilter
 }
@@ -208,11 +217,13 @@ export type NodeOrderByWithRelationInput = {
   workflowId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  credentialId?: Prisma.SortOrderInput | Prisma.SortOrder
   position?: Prisma.SortOrder
   data?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   workflow?: Prisma.WorkflowOrderByWithRelationInput
+  credential?: Prisma.CredentialOrderByWithRelationInput
   inputConnections?: Prisma.ConnectionOrderByRelationAggregateInput
   outConnections?: Prisma.ConnectionOrderByRelationAggregateInput
 }
@@ -225,11 +236,13 @@ export type NodeWhereUniqueInput = Prisma.AtLeast<{
   workflowId?: Prisma.StringFilter<"Node"> | string
   name?: Prisma.StringFilter<"Node"> | string
   type?: Prisma.EnumNodeTypeFilter<"Node"> | $Enums.NodeType
+  credentialId?: Prisma.StringNullableFilter<"Node"> | string | null
   position?: Prisma.JsonFilter<"Node">
   data?: Prisma.JsonFilter<"Node">
   createdAt?: Prisma.DateTimeFilter<"Node"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Node"> | Date | string
   workflow?: Prisma.XOR<Prisma.WorkflowScalarRelationFilter, Prisma.WorkflowWhereInput>
+  credential?: Prisma.XOR<Prisma.CredentialNullableScalarRelationFilter, Prisma.CredentialWhereInput> | null
   inputConnections?: Prisma.ConnectionListRelationFilter
   outConnections?: Prisma.ConnectionListRelationFilter
 }, "id">
@@ -239,6 +252,7 @@ export type NodeOrderByWithAggregationInput = {
   workflowId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  credentialId?: Prisma.SortOrderInput | Prisma.SortOrder
   position?: Prisma.SortOrder
   data?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -256,6 +270,7 @@ export type NodeScalarWhereWithAggregatesInput = {
   workflowId?: Prisma.StringWithAggregatesFilter<"Node"> | string
   name?: Prisma.StringWithAggregatesFilter<"Node"> | string
   type?: Prisma.EnumNodeTypeWithAggregatesFilter<"Node"> | $Enums.NodeType
+  credentialId?: Prisma.StringNullableWithAggregatesFilter<"Node"> | string | null
   position?: Prisma.JsonWithAggregatesFilter<"Node">
   data?: Prisma.JsonWithAggregatesFilter<"Node">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Node"> | Date | string
@@ -271,6 +286,7 @@ export type NodeCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   workflow: Prisma.WorkflowCreateNestedOneWithoutNodesInput
+  credential?: Prisma.CredentialCreateNestedOneWithoutNodeInput
   inputConnections?: Prisma.ConnectionCreateNestedManyWithoutToNodeInput
   outConnections?: Prisma.ConnectionCreateNestedManyWithoutFromNodeInput
 }
@@ -280,6 +296,7 @@ export type NodeUncheckedCreateInput = {
   workflowId: string
   name: string
   type: $Enums.NodeType
+  credentialId?: string | null
   position: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -297,6 +314,7 @@ export type NodeUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workflow?: Prisma.WorkflowUpdateOneRequiredWithoutNodesNestedInput
+  credential?: Prisma.CredentialUpdateOneWithoutNodeNestedInput
   inputConnections?: Prisma.ConnectionUpdateManyWithoutToNodeNestedInput
   outConnections?: Prisma.ConnectionUpdateManyWithoutFromNodeNestedInput
 }
@@ -306,6 +324,7 @@ export type NodeUncheckedUpdateInput = {
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+  credentialId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -319,6 +338,7 @@ export type NodeCreateManyInput = {
   workflowId: string
   name: string
   type: $Enums.NodeType
+  credentialId?: string | null
   position: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -340,6 +360,7 @@ export type NodeUncheckedUpdateManyInput = {
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+  credentialId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -361,6 +382,7 @@ export type NodeCountOrderByAggregateInput = {
   workflowId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  credentialId?: Prisma.SortOrder
   position?: Prisma.SortOrder
   data?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -372,6 +394,7 @@ export type NodeMaxOrderByAggregateInput = {
   workflowId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  credentialId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -381,6 +404,7 @@ export type NodeMinOrderByAggregateInput = {
   workflowId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  credentialId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -388,6 +412,48 @@ export type NodeMinOrderByAggregateInput = {
 export type NodeScalarRelationFilter = {
   is?: Prisma.NodeWhereInput
   isNot?: Prisma.NodeWhereInput
+}
+
+export type NodeCreateNestedManyWithoutCredentialInput = {
+  create?: Prisma.XOR<Prisma.NodeCreateWithoutCredentialInput, Prisma.NodeUncheckedCreateWithoutCredentialInput> | Prisma.NodeCreateWithoutCredentialInput[] | Prisma.NodeUncheckedCreateWithoutCredentialInput[]
+  connectOrCreate?: Prisma.NodeCreateOrConnectWithoutCredentialInput | Prisma.NodeCreateOrConnectWithoutCredentialInput[]
+  createMany?: Prisma.NodeCreateManyCredentialInputEnvelope
+  connect?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+}
+
+export type NodeUncheckedCreateNestedManyWithoutCredentialInput = {
+  create?: Prisma.XOR<Prisma.NodeCreateWithoutCredentialInput, Prisma.NodeUncheckedCreateWithoutCredentialInput> | Prisma.NodeCreateWithoutCredentialInput[] | Prisma.NodeUncheckedCreateWithoutCredentialInput[]
+  connectOrCreate?: Prisma.NodeCreateOrConnectWithoutCredentialInput | Prisma.NodeCreateOrConnectWithoutCredentialInput[]
+  createMany?: Prisma.NodeCreateManyCredentialInputEnvelope
+  connect?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+}
+
+export type NodeUpdateManyWithoutCredentialNestedInput = {
+  create?: Prisma.XOR<Prisma.NodeCreateWithoutCredentialInput, Prisma.NodeUncheckedCreateWithoutCredentialInput> | Prisma.NodeCreateWithoutCredentialInput[] | Prisma.NodeUncheckedCreateWithoutCredentialInput[]
+  connectOrCreate?: Prisma.NodeCreateOrConnectWithoutCredentialInput | Prisma.NodeCreateOrConnectWithoutCredentialInput[]
+  upsert?: Prisma.NodeUpsertWithWhereUniqueWithoutCredentialInput | Prisma.NodeUpsertWithWhereUniqueWithoutCredentialInput[]
+  createMany?: Prisma.NodeCreateManyCredentialInputEnvelope
+  set?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+  disconnect?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+  delete?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+  connect?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+  update?: Prisma.NodeUpdateWithWhereUniqueWithoutCredentialInput | Prisma.NodeUpdateWithWhereUniqueWithoutCredentialInput[]
+  updateMany?: Prisma.NodeUpdateManyWithWhereWithoutCredentialInput | Prisma.NodeUpdateManyWithWhereWithoutCredentialInput[]
+  deleteMany?: Prisma.NodeScalarWhereInput | Prisma.NodeScalarWhereInput[]
+}
+
+export type NodeUncheckedUpdateManyWithoutCredentialNestedInput = {
+  create?: Prisma.XOR<Prisma.NodeCreateWithoutCredentialInput, Prisma.NodeUncheckedCreateWithoutCredentialInput> | Prisma.NodeCreateWithoutCredentialInput[] | Prisma.NodeUncheckedCreateWithoutCredentialInput[]
+  connectOrCreate?: Prisma.NodeCreateOrConnectWithoutCredentialInput | Prisma.NodeCreateOrConnectWithoutCredentialInput[]
+  upsert?: Prisma.NodeUpsertWithWhereUniqueWithoutCredentialInput | Prisma.NodeUpsertWithWhereUniqueWithoutCredentialInput[]
+  createMany?: Prisma.NodeCreateManyCredentialInputEnvelope
+  set?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+  disconnect?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+  delete?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+  connect?: Prisma.NodeWhereUniqueInput | Prisma.NodeWhereUniqueInput[]
+  update?: Prisma.NodeUpdateWithWhereUniqueWithoutCredentialInput | Prisma.NodeUpdateWithWhereUniqueWithoutCredentialInput[]
+  updateMany?: Prisma.NodeUpdateManyWithWhereWithoutCredentialInput | Prisma.NodeUpdateManyWithWhereWithoutCredentialInput[]
+  deleteMany?: Prisma.NodeScalarWhereInput | Prisma.NodeScalarWhereInput[]
 }
 
 export type NodeCreateNestedManyWithoutWorkflowInput = {
@@ -464,6 +530,73 @@ export type NodeUpdateOneRequiredWithoutInputConnectionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.NodeUpdateToOneWithWhereWithoutInputConnectionsInput, Prisma.NodeUpdateWithoutInputConnectionsInput>, Prisma.NodeUncheckedUpdateWithoutInputConnectionsInput>
 }
 
+export type NodeCreateWithoutCredentialInput = {
+  id?: string
+  name: string
+  type: $Enums.NodeType
+  position: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workflow: Prisma.WorkflowCreateNestedOneWithoutNodesInput
+  inputConnections?: Prisma.ConnectionCreateNestedManyWithoutToNodeInput
+  outConnections?: Prisma.ConnectionCreateNestedManyWithoutFromNodeInput
+}
+
+export type NodeUncheckedCreateWithoutCredentialInput = {
+  id?: string
+  workflowId: string
+  name: string
+  type: $Enums.NodeType
+  position: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  inputConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutToNodeInput
+  outConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutFromNodeInput
+}
+
+export type NodeCreateOrConnectWithoutCredentialInput = {
+  where: Prisma.NodeWhereUniqueInput
+  create: Prisma.XOR<Prisma.NodeCreateWithoutCredentialInput, Prisma.NodeUncheckedCreateWithoutCredentialInput>
+}
+
+export type NodeCreateManyCredentialInputEnvelope = {
+  data: Prisma.NodeCreateManyCredentialInput | Prisma.NodeCreateManyCredentialInput[]
+  skipDuplicates?: boolean
+}
+
+export type NodeUpsertWithWhereUniqueWithoutCredentialInput = {
+  where: Prisma.NodeWhereUniqueInput
+  update: Prisma.XOR<Prisma.NodeUpdateWithoutCredentialInput, Prisma.NodeUncheckedUpdateWithoutCredentialInput>
+  create: Prisma.XOR<Prisma.NodeCreateWithoutCredentialInput, Prisma.NodeUncheckedCreateWithoutCredentialInput>
+}
+
+export type NodeUpdateWithWhereUniqueWithoutCredentialInput = {
+  where: Prisma.NodeWhereUniqueInput
+  data: Prisma.XOR<Prisma.NodeUpdateWithoutCredentialInput, Prisma.NodeUncheckedUpdateWithoutCredentialInput>
+}
+
+export type NodeUpdateManyWithWhereWithoutCredentialInput = {
+  where: Prisma.NodeScalarWhereInput
+  data: Prisma.XOR<Prisma.NodeUpdateManyMutationInput, Prisma.NodeUncheckedUpdateManyWithoutCredentialInput>
+}
+
+export type NodeScalarWhereInput = {
+  AND?: Prisma.NodeScalarWhereInput | Prisma.NodeScalarWhereInput[]
+  OR?: Prisma.NodeScalarWhereInput[]
+  NOT?: Prisma.NodeScalarWhereInput | Prisma.NodeScalarWhereInput[]
+  id?: Prisma.StringFilter<"Node"> | string
+  workflowId?: Prisma.StringFilter<"Node"> | string
+  name?: Prisma.StringFilter<"Node"> | string
+  type?: Prisma.EnumNodeTypeFilter<"Node"> | $Enums.NodeType
+  credentialId?: Prisma.StringNullableFilter<"Node"> | string | null
+  position?: Prisma.JsonFilter<"Node">
+  data?: Prisma.JsonFilter<"Node">
+  createdAt?: Prisma.DateTimeFilter<"Node"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Node"> | Date | string
+}
+
 export type NodeCreateWithoutWorkflowInput = {
   id?: string
   name: string
@@ -472,6 +605,7 @@ export type NodeCreateWithoutWorkflowInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  credential?: Prisma.CredentialCreateNestedOneWithoutNodeInput
   inputConnections?: Prisma.ConnectionCreateNestedManyWithoutToNodeInput
   outConnections?: Prisma.ConnectionCreateNestedManyWithoutFromNodeInput
 }
@@ -480,6 +614,7 @@ export type NodeUncheckedCreateWithoutWorkflowInput = {
   id?: string
   name: string
   type: $Enums.NodeType
+  credentialId?: string | null
   position: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -514,20 +649,6 @@ export type NodeUpdateManyWithWhereWithoutWorkflowInput = {
   data: Prisma.XOR<Prisma.NodeUpdateManyMutationInput, Prisma.NodeUncheckedUpdateManyWithoutWorkflowInput>
 }
 
-export type NodeScalarWhereInput = {
-  AND?: Prisma.NodeScalarWhereInput | Prisma.NodeScalarWhereInput[]
-  OR?: Prisma.NodeScalarWhereInput[]
-  NOT?: Prisma.NodeScalarWhereInput | Prisma.NodeScalarWhereInput[]
-  id?: Prisma.StringFilter<"Node"> | string
-  workflowId?: Prisma.StringFilter<"Node"> | string
-  name?: Prisma.StringFilter<"Node"> | string
-  type?: Prisma.EnumNodeTypeFilter<"Node"> | $Enums.NodeType
-  position?: Prisma.JsonFilter<"Node">
-  data?: Prisma.JsonFilter<"Node">
-  createdAt?: Prisma.DateTimeFilter<"Node"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Node"> | Date | string
-}
-
 export type NodeCreateWithoutOutConnectionsInput = {
   id?: string
   name: string
@@ -537,6 +658,7 @@ export type NodeCreateWithoutOutConnectionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   workflow: Prisma.WorkflowCreateNestedOneWithoutNodesInput
+  credential?: Prisma.CredentialCreateNestedOneWithoutNodeInput
   inputConnections?: Prisma.ConnectionCreateNestedManyWithoutToNodeInput
 }
 
@@ -545,6 +667,7 @@ export type NodeUncheckedCreateWithoutOutConnectionsInput = {
   workflowId: string
   name: string
   type: $Enums.NodeType
+  credentialId?: string | null
   position: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -566,6 +689,7 @@ export type NodeCreateWithoutInputConnectionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   workflow: Prisma.WorkflowCreateNestedOneWithoutNodesInput
+  credential?: Prisma.CredentialCreateNestedOneWithoutNodeInput
   outConnections?: Prisma.ConnectionCreateNestedManyWithoutFromNodeInput
 }
 
@@ -574,6 +698,7 @@ export type NodeUncheckedCreateWithoutInputConnectionsInput = {
   workflowId: string
   name: string
   type: $Enums.NodeType
+  credentialId?: string | null
   position: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -606,6 +731,7 @@ export type NodeUpdateWithoutOutConnectionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workflow?: Prisma.WorkflowUpdateOneRequiredWithoutNodesNestedInput
+  credential?: Prisma.CredentialUpdateOneWithoutNodeNestedInput
   inputConnections?: Prisma.ConnectionUpdateManyWithoutToNodeNestedInput
 }
 
@@ -614,6 +740,7 @@ export type NodeUncheckedUpdateWithoutOutConnectionsInput = {
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+  credentialId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -641,6 +768,7 @@ export type NodeUpdateWithoutInputConnectionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workflow?: Prisma.WorkflowUpdateOneRequiredWithoutNodesNestedInput
+  credential?: Prisma.CredentialUpdateOneWithoutNodeNestedInput
   outConnections?: Prisma.ConnectionUpdateManyWithoutFromNodeNestedInput
 }
 
@@ -649,6 +777,7 @@ export type NodeUncheckedUpdateWithoutInputConnectionsInput = {
   workflowId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+  credentialId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -656,10 +785,59 @@ export type NodeUncheckedUpdateWithoutInputConnectionsInput = {
   outConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutFromNodeNestedInput
 }
 
+export type NodeCreateManyCredentialInput = {
+  id?: string
+  workflowId: string
+  name: string
+  type: $Enums.NodeType
+  position: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type NodeUpdateWithoutCredentialInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+  position?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workflow?: Prisma.WorkflowUpdateOneRequiredWithoutNodesNestedInput
+  inputConnections?: Prisma.ConnectionUpdateManyWithoutToNodeNestedInput
+  outConnections?: Prisma.ConnectionUpdateManyWithoutFromNodeNestedInput
+}
+
+export type NodeUncheckedUpdateWithoutCredentialInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+  position?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  inputConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutToNodeNestedInput
+  outConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutFromNodeNestedInput
+}
+
+export type NodeUncheckedUpdateManyWithoutCredentialInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+  position?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type NodeCreateManyWorkflowInput = {
   id?: string
   name: string
   type: $Enums.NodeType
+  credentialId?: string | null
   position: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -674,6 +852,7 @@ export type NodeUpdateWithoutWorkflowInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  credential?: Prisma.CredentialUpdateOneWithoutNodeNestedInput
   inputConnections?: Prisma.ConnectionUpdateManyWithoutToNodeNestedInput
   outConnections?: Prisma.ConnectionUpdateManyWithoutFromNodeNestedInput
 }
@@ -682,6 +861,7 @@ export type NodeUncheckedUpdateWithoutWorkflowInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+  credentialId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -694,6 +874,7 @@ export type NodeUncheckedUpdateManyWithoutWorkflowInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumNodeTypeFieldUpdateOperationsInput | $Enums.NodeType
+  credentialId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -745,11 +926,13 @@ export type NodeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   workflowId?: boolean
   name?: boolean
   type?: boolean
+  credentialId?: boolean
   position?: boolean
   data?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   workflow?: boolean | Prisma.WorkflowDefaultArgs<ExtArgs>
+  credential?: boolean | Prisma.Node$credentialArgs<ExtArgs>
   inputConnections?: boolean | Prisma.Node$inputConnectionsArgs<ExtArgs>
   outConnections?: boolean | Prisma.Node$outConnectionsArgs<ExtArgs>
   _count?: boolean | Prisma.NodeCountOutputTypeDefaultArgs<ExtArgs>
@@ -760,11 +943,13 @@ export type NodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   workflowId?: boolean
   name?: boolean
   type?: boolean
+  credentialId?: boolean
   position?: boolean
   data?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   workflow?: boolean | Prisma.WorkflowDefaultArgs<ExtArgs>
+  credential?: boolean | Prisma.Node$credentialArgs<ExtArgs>
 }, ExtArgs["result"]["node"]>
 
 export type NodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -772,11 +957,13 @@ export type NodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   workflowId?: boolean
   name?: boolean
   type?: boolean
+  credentialId?: boolean
   position?: boolean
   data?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   workflow?: boolean | Prisma.WorkflowDefaultArgs<ExtArgs>
+  credential?: boolean | Prisma.Node$credentialArgs<ExtArgs>
 }, ExtArgs["result"]["node"]>
 
 export type NodeSelectScalar = {
@@ -784,30 +971,35 @@ export type NodeSelectScalar = {
   workflowId?: boolean
   name?: boolean
   type?: boolean
+  credentialId?: boolean
   position?: boolean
   data?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type NodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "workflowId" | "name" | "type" | "position" | "data" | "createdAt" | "updatedAt", ExtArgs["result"]["node"]>
+export type NodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "workflowId" | "name" | "type" | "credentialId" | "position" | "data" | "createdAt" | "updatedAt", ExtArgs["result"]["node"]>
 export type NodeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflow?: boolean | Prisma.WorkflowDefaultArgs<ExtArgs>
+  credential?: boolean | Prisma.Node$credentialArgs<ExtArgs>
   inputConnections?: boolean | Prisma.Node$inputConnectionsArgs<ExtArgs>
   outConnections?: boolean | Prisma.Node$outConnectionsArgs<ExtArgs>
   _count?: boolean | Prisma.NodeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type NodeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflow?: boolean | Prisma.WorkflowDefaultArgs<ExtArgs>
+  credential?: boolean | Prisma.Node$credentialArgs<ExtArgs>
 }
 export type NodeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflow?: boolean | Prisma.WorkflowDefaultArgs<ExtArgs>
+  credential?: boolean | Prisma.Node$credentialArgs<ExtArgs>
 }
 
 export type $NodePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Node"
   objects: {
     workflow: Prisma.$WorkflowPayload<ExtArgs>
+    credential: Prisma.$CredentialPayload<ExtArgs> | null
     inputConnections: Prisma.$ConnectionPayload<ExtArgs>[]
     outConnections: Prisma.$ConnectionPayload<ExtArgs>[]
   }
@@ -816,6 +1008,7 @@ export type $NodePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     workflowId: string
     name: string
     type: $Enums.NodeType
+    credentialId: string | null
     position: runtime.JsonValue
     data: runtime.JsonValue
     createdAt: Date
@@ -1215,6 +1408,7 @@ readonly fields: NodeFieldRefs;
 export interface Prisma__NodeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   workflow<T extends Prisma.WorkflowDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkflowClient<runtime.Types.Result.GetResult<Prisma.$WorkflowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  credential<T extends Prisma.Node$credentialArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Node$credentialArgs<ExtArgs>>): Prisma.Prisma__CredentialClient<runtime.Types.Result.GetResult<Prisma.$CredentialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   inputConnections<T extends Prisma.Node$inputConnectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Node$inputConnectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   outConnections<T extends Prisma.Node$outConnectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Node$outConnectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1250,6 +1444,7 @@ export interface NodeFieldRefs {
   readonly workflowId: Prisma.FieldRef<"Node", 'String'>
   readonly name: Prisma.FieldRef<"Node", 'String'>
   readonly type: Prisma.FieldRef<"Node", 'NodeType'>
+  readonly credentialId: Prisma.FieldRef<"Node", 'String'>
   readonly position: Prisma.FieldRef<"Node", 'Json'>
   readonly data: Prisma.FieldRef<"Node", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Node", 'DateTime'>
@@ -1647,6 +1842,25 @@ export type NodeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Nodes to delete.
    */
   limit?: number
+}
+
+/**
+ * Node.credential
+ */
+export type Node$credentialArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Credential
+   */
+  select?: Prisma.CredentialSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Credential
+   */
+  omit?: Prisma.CredentialOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CredentialInclude<ExtArgs> | null
+  where?: Prisma.CredentialWhereInput
 }
 
 /**

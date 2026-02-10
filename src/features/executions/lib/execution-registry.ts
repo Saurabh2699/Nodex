@@ -6,7 +6,9 @@ import { googleFormTriggerExecutor } from "@/features/triggers/components/google
 import { stripeTriggerExecutor } from "@/features/triggers/components/stripe-trigger/executor";
 import { geminiExecutor } from "../components/gemini/executor";
 import { openAIExecutor } from "../components/openai/executor";
-import { AnthropicExecutor } from "../components/anthropic/executor";
+import { anthropicExecutor } from "../components/anthropic/executor";
+import { discordExecutor } from "../components/discord/executor";
+import { slackExecutor } from "../components/slack/executor";
 
 export const executorRegistry: Partial<Record<NodeType, NodeExecutor>> = {
   [NodeType.MANUAL_TRIGGER]: manualTriggerExecutor,
@@ -15,7 +17,9 @@ export const executorRegistry: Partial<Record<NodeType, NodeExecutor>> = {
   [NodeType.STRIPE_TRIGGER]: stripeTriggerExecutor,
   [NodeType.GEMINI]: geminiExecutor,
   [NodeType.OPENAI]: openAIExecutor,
-  [NodeType.ANTHROPIC]: AnthropicExecutor,
+  [NodeType.ANTHROPIC]: anthropicExecutor,
+  [NodeType.DISCORD]: discordExecutor,
+  [NodeType.SLACK]: slackExecutor,
 };
 
 export const getExecutor = (type: NodeType): NodeExecutor => {

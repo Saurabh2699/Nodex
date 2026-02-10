@@ -4,6 +4,7 @@ import { NonRetriableError } from "inngest";
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import { openAIChannel } from "@/inngest/channels/openai";
+import prisma from "@/lib/prisma";
 
 Handlebars.registerHelper("json", (context) => {
   const jsonString = JSON.stringify(context, null, 2);
@@ -13,6 +14,7 @@ Handlebars.registerHelper("json", (context) => {
 
 type OpenAIData = {
   variableName?: string;
+  credentialId?: string;
   systemPrompt?: string;
   userPrompt?: string;
 };
@@ -21,6 +23,7 @@ export const openAIExecutor: NodeExecutor<OpenAIData> = async ({
   data,
   nodeId,
   context,
+  userId,
   step,
   publish,
 }) => {
@@ -41,6 +44,16 @@ export const openAIExecutor: NodeExecutor<OpenAIData> = async ({
     throw new NonRetriableError("OpenAI node: Variable name is missing.");
   }
 
+  if (!data.credentialId) {
+    await publish(
+      openAIChannel().status({
+        nodeId,
+        status: "error",
+      }),
+    );
+    throw new NonRetriableError("Gemini node: Credential Id is missing.");
+  }
+
   if (!data.userPrompt) {
     await publish(
       openAIChannel().status({
@@ -59,9 +72,26 @@ export const openAIExecutor: NodeExecutor<OpenAIData> = async ({
 
   const userPrompt = Handlebars.compile(data.userPrompt)(context);
 
-  const credentialValue = process.env.OPEN_AI_API_KEY;
+  const credential = await step.run("get-credential", () => {
+    return prisma.credential.findUnique({
+      where: {
+        id: data.credentialId,
+        userId,
+      },
+    });
+  });
 
-  const openai = createOpenAI({ apiKey: credentialValue });
+  if (!credential) {
+    await publish(
+      openAIChannel().status({
+        nodeId,
+        status: "error",
+      }),
+    );
+    throw new NonRetriableError("OpenAI node: Credential not found");
+  }
+
+  const openai = createOpenAI({ apiKey: credential.value });
 
   try {
     const { steps } = await step.ai.wrap("openai-generate-text", generateText, {

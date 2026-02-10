@@ -19,12 +19,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useCredentialsByType } from "@/features/credentials/hooks/use-credentials";
-import { CredentialType } from "@/generated/prisma/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -37,36 +33,36 @@ const formSchema = z.object({
       message:
         "Variable name must start with a letter or underscore and should contain only letters, numbers and underscores",
     }),
-  credentialId: z.string().optional(),
-  systemPrompt: z.string().min(1, "Credential is required"),
-  userPrompt: z.string().min(1, "User prompt is required"),
+  username: z.string().optional(),
+  content: z
+    .string()
+    .min(1, "Message content is required")
+    .max(2000, "Discord messages cannot exceed 2000 characters"),
+  webhookUrl: z.string().min(1, "Webhook URL is required"),
 });
 
-export type GeminiFormValues = z.infer<typeof formSchema>;
+export type DiscordFormValues = z.infer<typeof formSchema>;
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: z.infer<typeof formSchema>) => void;
-  defaultValues?: Partial<GeminiFormValues>;
+  defaultValues?: Partial<DiscordFormValues>;
 }
 
-export const GeminiDialog = ({
+export const DiscordDialog = ({
   open,
   onOpenChange,
   onSubmit,
   defaultValues = {},
 }: Props) => {
-  const { data: credentials, isLoading: isLoadingCredentials } =
-    useCredentialsByType(CredentialType.GEMINI);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       variableName: defaultValues.variableName || "",
-      credentialId: defaultValues.credentialId || "",
-      systemPrompt: defaultValues.systemPrompt || "",
-      userPrompt: defaultValues.userPrompt || "",
+      username: defaultValues.username || "",
+      content: defaultValues.content || "",
+      webhookUrl: defaultValues.webhookUrl || "",
     },
   });
 
@@ -74,14 +70,14 @@ export const GeminiDialog = ({
     if (open) {
       form.reset({
         variableName: defaultValues.variableName || "",
-        credentialId: defaultValues.credentialId || "",
-        systemPrompt: defaultValues.systemPrompt || "",
-        userPrompt: defaultValues.userPrompt || "",
+        username: defaultValues.username || "",
+        content: defaultValues.content || "",
+        webhookUrl: defaultValues.webhookUrl || "",
       });
     }
   }, [open, defaultValues, form]);
 
-  const watchVariableName = form.watch("variableName") || "myGemini";
+  const watchVariableName = form.watch("variableName") || "myDiscord";
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     onSubmit(values);
@@ -93,9 +89,9 @@ export const GeminiDialog = ({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Gemini Configuration</DialogTitle>
+            <DialogTitle>Discord Configuration</DialogTitle>
             <DialogDescription>
-              Configure the AI model and prompts for this node.
+              Configure the Discord webhook settings for this node.
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
@@ -110,11 +106,11 @@ export const GeminiDialog = ({
                   <FormItem>
                     <FormLabel>Variable Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="myGemini" {...field} />
+                      <Input placeholder="myDiscord" {...field} />
                     </FormControl>
                     <FormDescription>
                       Use this name to reference the result in other nodes:{" "}
-                      {`{{${watchVariableName}.response.text}}`}
+                      {`{{${watchVariableName}.text}}`}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -122,57 +118,37 @@ export const GeminiDialog = ({
               />
               <FormField
                 control={form.control}
-                name="credentialId"
+                name="webhookUrl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Gemini Credential</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={isLoadingCredentials || !credentials?.length}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a credential"/>
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {credentials?.map((option) => (
-                          <SelectItem key={option.id} value={option.id}>
-                            <div className="flex items-center gap-2">
-                              <Image
-                                src="/logos/gemini.svg"
-                                alt={option.name}
-                                width={16}
-                                height={16}
-                              />
-                              {option.name}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>Webhook URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="https://discord.com/api/webhooks/..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>{`Get this from Discord: Channel Settings -> Integrations -> Webhooks`}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
-                name="systemPrompt"
+                name="content"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>System Prompt (Optional)</FormLabel>
+                    <FormLabel>Message Content</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="You are a helpful assistant"
+                        placeholder="Summary: {{myGemini.response.text}}"
                         className="min-h-[80px] font-mono text-sm"
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      Sets the behavior of the assistant. Use {"{{variables}}"}{" "}
-                      for simple values or {"{{json variable}}"} to stringify
-                      objects
+                      The message to send. Use {"{{variables}}"} for simple
+                      values or {"{{json variable}}"} to stringify objects
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -180,21 +156,15 @@ export const GeminiDialog = ({
               />
               <FormField
                 control={form.control}
-                name="userPrompt"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>User Prompt</FormLabel>
+                    <FormLabel>Bot Username (Optional)</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Summarize this text: {{json httpResponse.data}}"
-                        className="min-h-[120px] font-mono text-sm"
-                        {...field}
-                      />
+                      <Input placeholder="Workflow Bot" {...field} />
                     </FormControl>
                     <FormDescription>
-                      The prompt to send to the AI. Use {"{{variables}}"} for
-                      simple values or {"{{json variable}}"} to stringify
-                      objects
+                      Override the webhook's default username
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
