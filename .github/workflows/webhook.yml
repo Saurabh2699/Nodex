@@ -1,0 +1,61 @@
+name: PR Summary
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  pull-requests: read
+  contents: read
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch base branch
+        run: |
+          git fetch origin ${{ github.base_ref }}
+
+      - name: Generate PR Summary
+        run: |
+          echo "Generating summary..."
+
+          COMMITS=$(git log origin/${{ github.base_ref }}..HEAD --pretty=format:"- %s")
+          FILES=$(git diff --name-status origin/${{ github.base_ref }})
+          STATS=$(git diff --stat origin/${{ github.base_ref }})
+
+          echo "COMMITS<<EOF" >> $GITHUB_ENV
+          echo "$COMMITS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          echo "FILES<<EOF" >> $GITHUB_ENV
+          echo "$FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          echo "STATS<<EOF" >> $GITHUB_ENV
+          echo "$STATS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Send to External Webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+        run: |
+          curl -X POST $WEBHOOK_URL \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-secret: $WEBHOOK_SECRET" \
+            -d "{
+              \"repository\": \"${{ github.repository }}\",
+              \"pr_number\": \"${{ github.event.pull_request.number }}\",
+              \"title\": \"${{ github.event.pull_request.title }}\",
+              \"author\": \"${{ github.actor }}\",
+              \"commits\": \"$COMMITS\",
+              \"files_changed\": \"$FILES\",
+              \"stats\": \"$STATS\"
+            }"
