@@ -62,6 +62,11 @@ const credentialTypeOptions = [
     label: "Anthropic",
     logo: "/logos/anthropic.svg",
   },
+  {
+    value: CredentialType.OTHER,
+    label: "Other",
+    logo: "/logos/password.png",
+  },
 ];
 
 interface CredentialFormProps {

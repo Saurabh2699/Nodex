@@ -68,12 +68,12 @@ export const GithubTriggerDialog = ({ open, onOpenChange }: Props) => {
           <div className="rounded-lg bg-muted p-4 space-y-2">
             <h4 className="font-medium text-sm">Setup instructions:</h4>
             <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
+              <li>Create a credential with name "GITHUB_WEBHOOK_SECRET"</li>
               <li>Open your Github</li>
               <li>{"Go to your repository -> Settings -> Webhooks"}</li>
               <li>Click on Add webhook</li>
-              <li>Replace Payload URL with your webhook URL above</li>
-              <li>Select Content type as application/json</li>
-              <li>Add your secret (Save this secret somewhere safe)</li>
+              <li>Replace Payload URL with your Webhook URL above</li>
+              <li>Select Content type as "application/json"</li>
               <li>Select the events you want to trigger your workflow for</li>
             </ol>
           </div>

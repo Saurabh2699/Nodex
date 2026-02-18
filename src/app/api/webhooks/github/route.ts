@@ -1,13 +1,14 @@
 import { sendWorkflowExecution } from "@/inngest/utils";
 import { NextRequest, NextResponse } from "next/server";
 import { createHmac } from "crypto";
+import prisma from "@/lib/prisma";
+import { decrypt } from "@/lib/encryption";
 
 function validateGitHubWebhookSecret(
   payload: string,
   signature: string | null,
+  secret: string,
 ): boolean {
-  const secret = process.env.GITHUB_WEBHOOK_SECRET;
-
   if (!secret) {
     console.error("GITHUB_WEBHOOK_SECRET is not configured");
     return false;
@@ -49,14 +50,54 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const workflow = await prisma.workflow.findUniqueOrThrow({
+      where: {
+        id: workflowId,
+      },
+      select: {
+        userId: true,
+      },
+    });
+
+    const userId = workflow.userId;
+
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        id: userId,
+      },
+      include: {
+        credentials: true,
+      },
+    });
+
+    const githubSecret = user?.credentials.find(
+      (cred) => cred.name === "GITHUB_WEBHOOK_SECRET",
+    );
+
+    if (!githubSecret) {
+      throw new Error("GITHUB_WEBHOOK_SECRET is not configured.");
+    }
+
+    const secret = decrypt(githubSecret.value);
+
     // Get the raw body for signature validation
     const payload = await request.text();
+    const payloadSize = Buffer.byteLength(payload, "utf-8");
+    if (payloadSize > 25 * 1024 * 1024) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Payload too large",
+        },
+        { status: 413 },
+      );
+    }
 
     // Get GitHub signature from headers
     const signature = request.headers.get("x-hub-signature-256");
 
     // Validate webhook secret
-    if (!validateGitHubWebhookSecret(payload, signature)) {
+    if (!validateGitHubWebhookSecret(payload, signature, secret)) {
       console.error("GitHub webhook signature validation failed");
       return NextResponse.json(
         {

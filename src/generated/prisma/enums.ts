@@ -12,7 +12,8 @@
 export const CredentialType = {
   OPENAI: 'OPENAI',
   ANTHROPIC: 'ANTHROPIC',
-  GEMINI: 'GEMINI'
+  GEMINI: 'GEMINI',
+  OTHER: 'OTHER'
 } as const
 
 export type CredentialType = (typeof CredentialType)[keyof typeof CredentialType]

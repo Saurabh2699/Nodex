@@ -121,6 +121,7 @@ const credentialLogos = {
   GEMINI: "/logos/gemini.svg",
   OPENAI: "/logos/openai.svg",
   ANTHROPIC: "/logos/anthropic.svg",
+  OTHER: "/logos/password.png",
 };
 
 export const CredentialsListItem = ({
