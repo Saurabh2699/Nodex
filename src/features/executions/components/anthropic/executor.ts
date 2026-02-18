@@ -122,7 +122,7 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({
     return {
       ...context,
       [data.variableName]: {
-        response: text,
+        text,
       },
     };
   } catch (error) {

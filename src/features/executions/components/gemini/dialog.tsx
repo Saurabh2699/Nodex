@@ -114,7 +114,7 @@ export const GeminiDialog = ({
                     </FormControl>
                     <FormDescription>
                       Use this name to reference the result in other nodes:{" "}
-                      {`{{${watchVariableName}.response.text}}`}
+                      {`{{${watchVariableName}.text}}`}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -187,7 +187,7 @@ export const GeminiDialog = ({
                     <FormControl>
                       <Textarea
                         placeholder="Summarize this text: {{json httpResponse.data}}"
-                        className="min-h-[120px] font-mono text-sm"
+                        className="h-25 font-mono text-sm overflow-auto"
                         {...field}
                       />
                     </FormControl>

@@ -7,6 +7,7 @@ import {
   KeyIcon,
   LogOutIcon,
   StarIcon,
+  UserIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -114,10 +115,12 @@ export const AppSidebar = () => {
             <SidebarMenuButton
               tooltip="Billing Portal"
               className="gap-x-4 h-10 px-4"
-              onClick={() => {}}
+              asChild
             >
-              <CreditCardIcon className="h-4 w-4" />
-              <span>Billing Portal</span>
+              <Link href="/user" prefetch>
+                <UserIcon className="h-4 w-4" />
+                <span>Profile</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>

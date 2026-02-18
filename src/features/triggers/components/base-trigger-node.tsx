@@ -60,7 +60,7 @@ export const BaseTriggerNode = memo(
         >
           <BaseNode
             onDoubleClick={onDoubleClick}
-            className="rounded-l-2xl relative group"
+            className="relative group"
             status={status}
           >
             <BaseNodeContent>

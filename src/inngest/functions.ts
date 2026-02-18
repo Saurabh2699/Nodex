@@ -13,6 +13,7 @@ import { anthropicChannel } from "./channels/anthropic";
 import { discordChannel } from "./channels/discord";
 import { slackChannel } from "./channels/slack";
 import { ExecutionStatus } from "@/generated/prisma/enums";
+import { githubTriggerChannel } from "./channels/github-trigger";
 
 export const executeWorkflow = inngest.createFunction(
   {
@@ -41,6 +42,7 @@ export const executeWorkflow = inngest.createFunction(
       anthropicChannel(),
       discordChannel(),
       slackChannel(),
+      githubTriggerChannel()
     ],
   },
   async ({ event, step, publish }) => {

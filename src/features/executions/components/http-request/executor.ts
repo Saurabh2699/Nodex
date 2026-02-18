@@ -82,11 +82,9 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({
         ? await response.json()
         : await response.text();
       const responsePayload = {
-        httpResponse: {
-          status: response.status,
-          statusText: response.statusText,
-          data: responseData,
-        },
+        status: response.status,
+        statusText: response.statusText,
+        data: responseData,
       };
 
       return {

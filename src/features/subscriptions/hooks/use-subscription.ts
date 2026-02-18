@@ -9,13 +9,10 @@ export const useSubscription = () => {
       return data;
     },
   });
-
 };
 
 export const useHasActiveSubscription = () => {
   const { data: customerState, isLoading, ...rest } = useSubscription();
-
-  console.log("customerState", customerState);
 
   const hasActiveSubscription =
     customerState?.activeSubscriptions &&

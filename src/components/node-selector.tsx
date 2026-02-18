@@ -43,6 +43,12 @@ const triggerNodes: NodeTypeOption[] = [
     description: "Runs the flow when the stripe event is captured",
     icon: "/logos/stripe.svg",
   },
+  {
+    type: NodeType.GITHUB,
+    label: "Github",
+    description: "Runs the flow when any event happens on Github Repo",
+    icon: "/logos/github.svg",
+  },
 ];
 
 const executionNodes: NodeTypeOption[] = [

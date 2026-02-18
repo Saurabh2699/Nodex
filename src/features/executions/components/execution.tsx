@@ -120,7 +120,7 @@ export const ExecutionView = ({ executionId }: { executionId: string }) => {
         </div>
         {execution.error && (
           <div className="mt-6 p-4 bg-red-50 rounded-md space-y-3">
-            <div>
+            <div className="overflow-auto">
               <p className="text-sm font-medium text-red-900 mb-2">Error</p>
               <p className="text-sm text-red-800 font-mono">
                 {execution.error}

@@ -28,7 +28,8 @@ export const NodeType = {
   OPENAI: 'OPENAI',
   ANTHROPIC: 'ANTHROPIC',
   DISCORD: 'DISCORD',
-  SLACK: 'SLACK'
+  SLACK: 'SLACK',
+  GITHUB: 'GITHUB'
 } as const
 
 export type NodeType = (typeof NodeType)[keyof typeof NodeType]

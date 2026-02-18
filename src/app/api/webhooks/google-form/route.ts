@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       responses: body.responses,
       raw: body,
     };
-    // Trigger an inng est job
+    // Trigger an inngest job
     await sendWorkflowExecution({
       workflowId,
       initialData: {
