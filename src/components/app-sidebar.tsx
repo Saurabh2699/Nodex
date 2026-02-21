@@ -50,6 +50,7 @@ const menuItems = [
 ];
 
 export const AppSidebar = () => {
+  console.log("VERCEL ENV: " + process.env.NODE_ENV);
   const router = useRouter();
   const pathname = usePathname();
   const { hasActiveSubscription, isLoading } = useHasActiveSubscription();

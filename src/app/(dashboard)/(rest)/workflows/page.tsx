@@ -17,7 +17,7 @@ type PageProps = {
 };
 
 const Page = async ({ searchParams }: PageProps) => {
-  console.log("VERCEL ENV: " + process.env.NODE_ENV); 
+   
   await requireAuth();
 
   const params = await workflowsParamsLoader(searchParams);
