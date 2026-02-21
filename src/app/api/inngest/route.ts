@@ -9,3 +9,5 @@ export const { GET, POST, PUT } = serve({
     executeWorkflow
   ],
 });
+
+export const runtime = "nodejs";
