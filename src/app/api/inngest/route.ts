@@ -11,3 +11,4 @@ export const { GET, POST, PUT } = serve({
 });
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
