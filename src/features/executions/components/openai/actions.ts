@@ -1,3 +1,5 @@
+"use server";
+
 import { openAIChannel } from "@/inngest/channels/openai";
 import { inngest } from "@/inngest/client";
 import { getSubscriptionToken, Realtime } from "@inngest/realtime";

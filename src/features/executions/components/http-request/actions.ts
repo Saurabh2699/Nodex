@@ -1,3 +1,5 @@
+"use server";
+
 import { httpRequestChannel } from "@/inngest/channels/http-requests";
 import { inngest } from "@/inngest/client";
 import { getSubscriptionToken, Realtime } from "@inngest/realtime";

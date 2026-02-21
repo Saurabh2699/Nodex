@@ -1,3 +1,5 @@
+"use server";
+
 import { discordChannel } from "@/inngest/channels/discord";
 import { inngest } from "@/inngest/client";
 import { getSubscriptionToken, Realtime } from "@inngest/realtime";

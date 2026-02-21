@@ -1,3 +1,5 @@
+"use server";
+
 import { slackChannel } from "@/inngest/channels/slack";
 import { inngest } from "@/inngest/client";
 import { getSubscriptionToken, Realtime } from "@inngest/realtime";
